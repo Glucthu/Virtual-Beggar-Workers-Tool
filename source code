@@ -1,0 +1,68 @@
+#include <iostream>
+#include <stdlib.h>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+void ingreso_de_datos(float &, float &);
+
+int main()
+{
+    vector <float> tiempo, dinero, velocidad;
+    tiempo.resize(3);
+    dinero.resize(3);
+    velocidad.resize(3);
+
+    char opt;
+
+    do
+    {
+        for(int i = 0; i < 3; i++)
+            ingreso_de_datos(tiempo[i], dinero[i]);
+
+        for(int i = 0; i < 3; i++)
+        {
+            cout << i+1 << ": " << dinero[i] / tiempo[i] << " Millones por hora" << endl;
+            velocidad[i] = dinero[i] / tiempo[i];
+        }
+
+        float maximo = max(max(velocidad[0], velocidad[1]), velocidad[2]);
+
+        for(int i = 0; i < 3; i++)
+            if(maximo == velocidad[i])
+                cout << "El mayor es: " << i+1 << endl;
+        cout << "Si no desea ingresar mas trabajadores oprima \"N\", de lo contrario oprima cualquier tecla: ";
+        cin >> opt;
+    } while(opt != 'N' && opt != 'n');
+
+    return 0;
+}
+
+void ingreso_de_datos(float &tiempo, float &dinero)
+{
+    system("cls");
+    float tiempo_1, tiempo_2;
+    char unidad_tiempo;
+
+    cout << "Dinero (en millones): "; cin >> dinero;
+
+    do
+    {
+        cout << "Unidad de tiempo: "; cin >> unidad_tiempo;
+    } while(unidad_tiempo != 'h' && unidad_tiempo != 'H' && unidad_tiempo != 'm' && unidad_tiempo != 'M');
+
+    cout << "Tiempo 1: "; cin >> tiempo_1;
+    cout << "Tiempo 2: "; cin >> tiempo_2;
+
+    if(unidad_tiempo == 'h' || unidad_tiempo == 'H')
+    {
+        tiempo_2 /= 60;
+    } else
+    {
+        tiempo_1 /= 60;
+        tiempo_2 /= 3600;
+    }
+
+    tiempo = tiempo_1 + tiempo_2;
+}
