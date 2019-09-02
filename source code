@@ -2,67 +2,94 @@
 #include <stdlib.h>
 #include <algorithm>
 #include <vector>
+#include <ctype.h>
 
 using namespace std;
 
-void ingreso_de_datos(float &, float &);
+void Works(float &, float &);
 
 int main()
 {
-    vector <float> tiempo, dinero, velocidad;
-    tiempo.resize(3);
-    dinero.resize(3);
-    velocidad.resize(3);
+    const char exit_character = 'N';
+    ios::sync_with_stdio(false);
 
-    char opt;
+    vector <float> time, money, velocity;
+
+    //time, money and velocity of the three works
+    time.resize(3);
+    money.resize(3);
+    velocity.resize(3);
+
+    char option;    //'N' for end the program
 
     do
     {
         for(int i = 0; i < 3; i++)
-            ingreso_de_datos(tiempo[i], dinero[i]);
+            Works(time[i], money[i]);
 
         for(int i = 0; i < 3; i++)
         {
-            cout << i+1 << ": " << dinero[i] / tiempo[i] << " Millones por hora" << endl;
-            velocidad[i] = dinero[i] / tiempo[i];
+            velocity[i] = money[i] / time[i];
+            cout << i+1 << ": " << velocity[i] << " Millions per hour" << endl;
         }
 
-        float maximo = max(max(velocidad[0], velocidad[1]), velocidad[2]);
+        float maximum = max(max(velocity[0], velocity[1]), velocity[2]);
 
         for(int i = 0; i < 3; i++)
-            if(maximo == velocidad[i])
-                cout << "El mayor es: " << i+1 << endl;
-        cout << "Si no desea ingresar mas trabajadores oprima \"N\", de lo contrario oprima cualquier tecla: ";
-        cin >> opt;
-    } while(opt != 'N' && opt != 'n');
+            if(maximum == velocity[i])
+            {
+                cout << "The biggest is: " << i+1 << endl;
+                break;
+            }
+
+        cout << "\nPress 'N' for exit or any key to continue" << endl;
+        cin >> option;
+
+    } while( (option != exit_character) and (option != tolower(exit_character) ));    //option different of N and n
 
     return 0;
 }
 
-void ingreso_de_datos(float &tiempo, float &dinero)
+void Works(float &time, float &money)
 {
-    system("cls");
-    float tiempo_1, tiempo_2;
-    char unidad_tiempo;
+    const char available_time_unit[2] =     {'H','M'};
+    const char available_money_unit[3] =    {'T', 'M', 'B'};
 
-    cout << "Dinero (en millones): "; cin >> dinero;
+    system("cls");
+    float time_1, time_2;
+    char time_unit, money_unit;
 
     do
     {
-        cout << "Unidad de tiempo: "; cin >> unidad_tiempo;
-    } while(unidad_tiempo != 'h' && unidad_tiempo != 'H' && unidad_tiempo != 'm' && unidad_tiempo != 'M');
+        cout << "Money unit: "; cin >> money_unit;
+    } while( (money_unit != available_money_unit[0]) and (money_unit != tolower(available_money_unit[0])) and
+             (money_unit != available_money_unit[1]) and (money_unit != tolower(available_money_unit[1])) and
+             (money_unit != available_money_unit[2]) and (money_unit != tolower(available_money_unit[2])) );
+              //money unit different of T, M, B, t, m and b
 
-    cout << "Tiempo 1: "; cin >> tiempo_1;
-    cout << "Tiempo 2: "; cin >> tiempo_2;
+    cout << "Money: "; cin >> money;
 
-    if(unidad_tiempo == 'h' || unidad_tiempo == 'H')
+    do
     {
-        tiempo_2 /= 60;
+        cout << "Time unit: "; cin >> time_unit;
+    } while( (time_unit != available_time_unit[0]) and (time_unit != tolower(available_time_unit[0])) and
+             (time_unit != available_time_unit[1]) and (time_unit != tolower(available_time_unit[1])) );
+              //money unit different of H, M, h and m
+
+    cout << "Time 1: "; cin >> time_1;
+    cout << "Time 2: "; cin >> time_2;
+
+    if( (money_unit != available_money_unit[1]) and (money_unit != tolower(available_money_unit[1])) )
+        money /= 1000000;    //million (7 digits)
+
+    if( (time_unit == available_time_unit[0]) or (time_unit == tolower(available_time_unit[0])) )
+    {
+        time_2 /= 60;   //minutes to hours
     } else
     {
-        tiempo_1 /= 60;
-        tiempo_2 /= 3600;
+        time_1 /= 60;
+        time_2 /= 3600; //seconds to hours
     }
 
-    tiempo = tiempo_1 + tiempo_2;
+    time = time_1 + time_2;
 }
