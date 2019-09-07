@@ -7,6 +7,7 @@
 using namespace std;
 
 void Works(float &, float &);
+inline void cls();
 
 int main()
 {
@@ -55,7 +56,8 @@ void Works(float &time, float &money)
     const char available_time_unit[2] =     {'H','M'};
     const char available_money_unit[3] =    {'T', 'M', 'B'};
 
-    system("cls");
+    cls();
+
     float time_1, time_2;
     char time_unit, money_unit;
 
@@ -80,7 +82,7 @@ void Works(float &time, float &money)
     cout << "Time 2: "; cin >> time_2;
 
     if( (money_unit != available_money_unit[1]) and (money_unit != tolower(available_money_unit[1])) )
-        money /= 1000000;    //million (7 digits)
+        money /= 1000000;    //one million (7 digits)
 
     if( (time_unit == available_time_unit[0]) or (time_unit == tolower(available_time_unit[0])) )
     {
@@ -92,4 +94,9 @@ void Works(float &time, float &money)
     }
 
     time = time_1 + time_2;
+}
+
+inline void cls()
+{
+    if (system("cls")) system("clear");     //this is for linux and windows compatibility
 }
